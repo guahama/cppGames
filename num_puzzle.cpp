@@ -28,6 +28,7 @@ int main(int argc, char const *argv[])
         nums[i] = i + 1;
     }
     nums[24] = INT32_MAX;
+    int status = 24;
     for (int i = 0; i < 24; i++)
     {
         int a = rand() % 24;
@@ -55,18 +56,51 @@ int main(int argc, char const *argv[])
         }
         cout << "command : wasd, quit : q" << endl;
         char command = getche_linux();
+        cout << endl;
         if (command == 'q')
             break;
 
         switch (command)
         {
         case 'w':
+            if (status > 4)
+            {
+                int tmp;
+                tmp = nums[status];
+                nums[status] = nums[status - 5];
+                nums[status - 5] = tmp;
+                status = status - 5;
+            }
             break;
         case 'a':
+            if (status % 5 != 0)
+            {
+                int tmp;
+                tmp = nums[status];
+                nums[status] = nums[status - 1];
+                nums[status - 1] = tmp;
+                status = status - 1;
+            }
             break;
         case 's':
+        if (status < 20)
+            {
+                int tmp;
+                tmp = nums[status];
+                nums[status] = nums[status + 5];
+                nums[status + 5] = tmp;
+                status = status + 5;
+            }
             break;
         case 'd':
+        if (status % 5 != 4)
+            {
+                int tmp;
+                tmp = nums[status];
+                nums[status] = nums[status + 1];
+                nums[status + 1] = tmp;
+                status = status + 1;
+            }
             break;
         
         default:
@@ -74,6 +108,20 @@ int main(int argc, char const *argv[])
         }
 
     }
+
+    bool win = true;
+    for (int i = 0; i < 24; i++)
+    {
+        if (nums[i] != i + 1)
+        {
+            win = false;
+            break;
+        }
+    }
+    if (win)
+        cout << "you win!" << endl;
+    else
+        cout << "you lose" << endl;
     
     
 
