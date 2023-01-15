@@ -54,9 +54,8 @@ int main(int argc, char const *argv[])
             }
             cout << endl;
         }
-        cout << "pick your number";
-        cout << endl;
-        cout << bingoCount << endl;
+        cout << "bingo Count : " << bingoCount << endl;
+        cout << "pick your number" << endl;
         cin >> number;
 
         if (number == 0)
@@ -67,76 +66,70 @@ int main(int argc, char const *argv[])
         {
             cout << "wrong number" << endl;
             continue;
-        }
-        bool is_checked = true;
-        for (int i = 0; i < 25; i++)
+        }else
         {
-            if (map[i] == number)
+            bool bacc = true;
+            for (int i = 0; i < 25; i++)
             {
-                is_checked = false;
-                map[i] = INT32_MAX;
-                if (i % 6 == 0)
+                if (map[i] == number)
                 {
-                    bool is_bingo = true;
-                    for (int j = 0; j < 5; j++)
-                    {
-                        if (map[j * 6] != INT32_MAX)
-                        {
-                            is_bingo = false;
-                            break;
-                        }
-                    }
-                    if (is_bingo)
-                        bingoCount++;
+                    map[i] = INT32_MAX;
+                    bacc = false;
+                    break;
                 }
-                if (i % 4 == 0 && i != 24 && i != 0)
-                {
-                    bool is_bingo = true;
-                    for (int j = 1; j < 6; j++)
-                    {
-                        if (map[j * 4] != INT32_MAX)
-                        {
-                            is_bingo = false;
-                            break;
-                        }
-                    }
-                    if (is_bingo)
-                        bingoCount++;
-                }
-                int row = i % 5;
-                int col = i / 5;
-                bool is_bingo = true;
-                for (int j = 0; j < 5; j++)
-                {
-                    if (map[row + j] != INT32_MAX)
-                    {
-                        is_bingo = false;
-                        break;
-                    }
-                }
-                if (is_bingo)
-                    bingoCount++;
-                is_bingo = true;
-                for (int j = 0; j < 5; j++)
-                {
-                    if (map[col + j * 5] != INT32_MAX)
-                    {
-                        is_bingo = false;
-                        break;
-                    }
-                }
-                if (is_bingo)
-                    bingoCount++;
-                break;
             }
-            system("clear");
+            if (bacc)
+            {
+                cout << "overlaped number" << endl;
+                continue;
+            }
         }
-        if (is_checked)
+
+        bingoCount = 0;
+        int rowCheck = 0, colCheck = 0;
+        for (int i = 0; i < 5; i++)
         {
-            cout << "already selected" << endl;
-            continue;
+            rowCheck = colCheck = 0;
+            for (int j = 0; j < 5; j++)
+            {
+                if (map[i * 5 + j] == INT32_MAX)
+                    rowCheck++;
+            }
+            if (rowCheck == 5)
+            bingoCount++;
+            for (int j = 0; j < 5; j++)
+            {
+                if (map[j * 5 + i] == INT32_MAX)
+                    colCheck++;
+            }
+            if (colCheck == 5)
+            bingoCount++;
         }
-        if (bingoCount > 4)
+        int diaCount = 0;
+        for (int i = 0; i < 25; i += 6)
+        {
+            if (map[i] == INT32_MAX)
+            {
+                diaCount++;
+            }
+        }
+        if (diaCount == 5)
+        {
+            bingoCount++;
+        }
+        diaCount = 0;
+        for (int i = 4; i < 24; i += 4)
+        {
+            if (map[i] == INT32_MAX)
+            {
+                diaCount++;
+            }
+        }
+        if (diaCount == 5)
+        {
+            bingoCount++;
+        }
+        if (bingoCount >= 5)
         {
             break;
         }
